@@ -1,0 +1,2 @@
+- src: https://github.com/GSA/sectools-ansible-jenkins
+  name: sectools_jenkins

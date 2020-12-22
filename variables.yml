@@ -1,0 +1,18 @@
+---
+app_env: "dev"
+project: "test"
+
+aws_region: us-east-1
+aws_instance_type: m5.large
+aws_instance_name: "my-jenkins"
+aws_ecr_arn: ""
+
+aws_subnet_id: "your-subnet-id"
+aws_vpc_id: "your-vpc-id"
+aws_jump_host_cidr_list: ["10.0.0.0/24"]
+aws_key_name: "jenkins-ssh"
+aws_ami_id: "AMI ID to deploy to the jenkins host"
+
+ansible_ssh_private_key_file: "jenkins-ssh"
+jenkins_state_bucket_name: "terraform state bucket location"
+jenkins_state_file_key: "terraform state file key"

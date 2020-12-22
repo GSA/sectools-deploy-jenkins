@@ -1,0 +1,45 @@
+---
+- hosts: localhost
+  gather_facts: no
+  vars_files:
+    - ./variables.yml
+  tasks:
+    - name: Terraform init
+      community.general.terraform:
+        project_path: 'terraform/'
+        state: present
+        force_init: true
+        backend_config:
+          region: "{{ aws_region }}"
+          bucket: "{{ jenkins_state_bucket_name }}"
+          key: "{{ jenkins_state_file_key }}"
+        variables:
+          app_env: "{{ app_env }}"
+          project: "{{ project }}"
+          region: "{{ aws_region }}"
+          subnet_private_id: "{{ aws_subnet_id }}"
+          vpc_id: "{{ aws_vpc_id }}"
+          instance_type: "{{ aws_instance_type }}"
+          instance_name: "{{ aws_instance_name }}"
+          aws_key_name: "{{ aws_key_name }}"
+          ami_id: "{{ aws_ami_id }}"
+          jump_host_cidr_list: '{{ aws_jump_host_cidr_list|to_json }}'
+          ecr_arn: "{{ aws_ecr_arn }}"
+    - name: gather remote facts
+      ec2_instance_info:
+        filters:
+          instance-state-name: running
+          "tag:Name": "{{ project }}-{{ aws_instance_name }}"
+      register: ec2_facts
+    - name: Add running jenkins instances to in-memory inventory host group
+      add_host:
+        hostname: "{{ item.public_ip_address }}"
+        groups: jenkins
+      with_items: "{{ ec2_facts.instances }}"
+- hosts: jenkins
+  become: true
+  user: ubuntu
+  vars_files:
+    - ./variables.yml
+  roles:
+    - external/sectools_jenkins
