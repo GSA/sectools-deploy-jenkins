@@ -4,14 +4,14 @@ project: "test"
 
 aws_region: us-east-1
 aws_instance_type: m5.large
-aws_instance_name: jenkins
+aws_instance_name: "my-jenkins"
 
-aws_subnet_id: subnet-070839c86b331e16e
-aws_vpc_id: vpc-085f11049feacae24
-aws_jump_host_cidr_list: ["99.74.3.45/32"]
-aws_key_name: eevans
-aws_ami_id: ami-0885b1f6bd170450c
+aws_subnet_id: "your-subnet-id"
+aws_vpc_id: "your-vpc-id"
+aws_jump_host_cidr_list: ["10.0.0.0/24"]
+aws_key_name: "jenkins-ssh"
+aws_ami_id: "AMI ID to deploy to the jenkins host"
 
-ansible_ssh_private_key_file: /Users/ericgonzales/Documents/eevans.pem
-jenkins_state_bucket_name: gsa-terraform-state
-jenkins_state_file_key: jenkins.tfstate
+ansible_ssh_private_key_file: "jenkins-ssh"
+jenkins_state_bucket_name: "terraform state bucket location"
+jenkins_state_file_key: "terraform state file key"
