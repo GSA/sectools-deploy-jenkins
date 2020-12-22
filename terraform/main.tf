@@ -38,5 +38,4 @@ module "jenkins" {
   jump_host_cidr_list   = var.jump_host_cidr_list
   app_env               = var.app_env
   project               = var.project
-  ecr_arn               = var.ecr_arn
 }
