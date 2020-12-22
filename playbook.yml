@@ -24,7 +24,6 @@
           aws_key_name: "{{ aws_key_name }}"
           ami_id: "{{ aws_ami_id }}"
           jump_host_cidr_list: '{{ aws_jump_host_cidr_list|to_json }}'
-          ecr_arn: "{{ aws_ecr_arn }}"
     - name: gather remote facts
       ec2_instance_info:
         filters:
