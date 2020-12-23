@@ -40,5 +40,21 @@
   user: ubuntu
   vars_files:
     - ./variables.yml
+  tasks:
+    - name: Install AWS CLI
+      command: snap install aws-cli --classic
+    - name: Ensure Jenkins backups occur at a specific frequency
+      cron:
+        name: "backup jenkins"
+        special_time: '{{ jenkins_backup_frequency }}'
+        job: "aws s3 cp --recursive {{ jenkins_home_location }} s3://{{ project }}-{{ app_env }}-jenkins-backup/jenkins_home"
+    - name: Optionally restore Jenkins from a backup
+      command: aws s3 cp --recursive s3://{{ project }}-{{ app_env }}-jenkins-backup/jenkins_home {{ jenkins_home_location }}
+      when: restore_from_backup
+- hosts: jenkins
+  become: true
+  user: ubuntu
+  vars_files:
+    - ./variables.yml
   roles:
     - external/sectools_jenkins
